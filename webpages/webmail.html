@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+    <style>
+        table.striped>tbody>tr:nth-child(odd) {
+            background-color: white;
+        }
+        nav {
+            background-color: #5a93e2;
+        }
+
+        table.striped>tbody>tr {
+            border-bottom: 1px solid #494949;
+        }
+
+        .container {
+            margin-top: 1%;
+        }
+        .body-cell {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+
+        table.striped>tbody>tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex flex-shrink-0 items-center">
+                <a href="/home">
+                <img class="h-16 w-auto" src="./images/penncloud-logo-name.png" alt="Logo">
+                </a>
+              </div>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-5">
+                  <a href="/storage" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Storage</a>
+                  <a href="/webmail" class="bg-gray-900 text-white rounded-md px-3 py-2 text-md font-medium" aria-current="page">Mail</a>
+                  <a href="http://localhost:8888" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Admin</a>
+                  <a id="reset-password" onclick="reset_password()" href="/reset_password" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Reset Password</a>
+                  <div id="logged-in-status"><a href="/login" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Log In</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div></div>
+              <a id="logged-in-user" class="flex text-white-300 rounded-md px-3 py-2 text-sm font-medium">Not Logged In</a>
+              <div></div>
+              <a id="user-avatar"><img
+                style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; margin-top: 20%;"
+                src="./images/user_default.png" alt="User Icon"></a>
+            </div>
+          </div>
+        </div>
+    
+      </nav>
+
+    <main>
+        <!-- Spacer for layout adjustment -->
+<div class="h-16"></div>
+
+<!-- Compose button -->
+<div class="px-8">
+    <button id="new-message" class="btn" style="background-color: #2a7004;">Compose</button>
+</div>
+
+<!-- Email management sections -->
+<div class="row px-8">
+    <!-- Compose email form -->
+    <section class="col s10">
+        <div id="compose-email" style="display: none;">
+            <form id="email-form">
+                <!-- To field -->
+                <div class="input-field">
+                    <input id="to" type="email" name="to" required>
+                    <label for="to">To</label>
+                </div>
+
+                <div class="input-field">
+                    <div></div>
+                    <input id="subject" type="text" name="subject">
+                    <div></div>
+                    <label for="subject">Subject</label>
+                </div>
+
+                <div class="input-field">
+                    <div></div>
+                    <textarea id="body" class="materialize-textarea" name="body"></textarea>
+                    <div></div>
+                    <label for="body">Body</label>
+                </div>
+
+                <button type="submit" class="btn" style="background-color: #79c0e9;">Send</button>
+            </form>
+        </div>
+
+        <div class="d-grid gap-2 d-md-block">
+            <div class="h-12"></div>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Messages to Display
+                </button>
+                <ul class="dropdown-menu">
+                    <li id="inbox"><a class="dropdown-item" href="#">Inbox</a></li>
+                    <li id="sent"><a class="dropdown-item" href="#">Sent</a></li>
+                    <li id="deleted"><a class="dropdown-item" href="#">Deleted</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Email table -->
+        <table class="striped">
+            <thead>
+                <tr>
+                    <div></div>
+                    <th>Sender</th>
+                    <div></div>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <div></div>
+                </tr>
+            </thead>
+            <tbody id="emails-table-body">
+            </tbody>
+        </table>
+    </section>
+</div>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                <script>
+                    const localhosturl = "";
+let currentFolder = 'inbox';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    fetchEmails(currentFolder);
+});
+
+function setupEventListeners() {
+    ['inbox', 'sent', 'deleted'].forEach(folder => {
+        document.getElementById(folder).addEventListener('click', () => {
+            currentFolder = folder;
+            fetchEmails(folder);
+        });
+    });
+
+    const composeEmailDiv = document.getElementById('compose-email');
+    const newMessageBtn = document.getElementById('new-message');
+    
+    newMessageBtn.addEventListener('click', () => {
+        composeEmailDiv.style.display = composeEmailDiv.style.display === 'block' ? 'none' : 'block';
+    });
+
+    const emailForm = document.getElementById('email-form');
+    emailForm.addEventListener('submit', handleEmailSend);
+}
+
+async function fetchEmails(folder) {
+    try {
+        const response = await fetch(`${localhosturl}/${folder}`, { credentials: "include" });
+        if (!response.ok) throw new Error(`Failed to fetch ${folder} emails`);
+
+        const data = await response.text();
+        const emailBlocks = data.split("====================\n").slice(0, -1);
+        const emails = emailBlocks.map(block => parseEmailBlock(block));
+        populateEmails(emails);
+    } catch (error) {
+        console.error(error);
+        M.toast({ html: `Fetching ${folder} emails error!`, classes: 'red' });
+    }
+}
+
+function parseEmailBlock(block) {
+    const emailLines = block.split('\n');
+    let email = { from: '', to: '', subject: '', body: '', uid: '', date: '' };
+
+    emailLines.forEach(line => {
+        if (line.startsWith('From: ')) {
+            console.log(line);
+            email.from = line.substring(6).trim();
+        } else if (line.startsWith('UID: ')) {
+            console.log(line);
+            email.uid = line.substring(5).trim();
+        } else if (line.startsWith('To: ')) {
+            console.log(line);
+            email.to = line.substring(3).trim();
+        } else if (line.startsWith('Subject: ')) {
+            console.log(line);
+            email.subject = line.substring(8).trim();
+        } else if (line.startsWith('Date: ')) {
+            console.log(line);
+            email.date = line.substring(6).trim();
+        } else {
+            email.body += line + '\n';
+        }
+    });
+
+    return email;
+}
+
+function populateEmails(emails) {
+    const tbody = document.getElementById('emails-table-body');
+    tbody.innerHTML = '';
+    emails.forEach(email => {
+        const bodyRow = createEmailBodyRow(email);
+        const tr = createEmailRow(email);
+        tbody.append(tr, bodyRow);
+    });
+}
+
+function createEmailRow(email) {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-email-id', email.uid);
+    tr.innerHTML = `
+        <td>${email.from}</td>
+        <td>${email.subject}</td>
+        <td>${email.date}</td>
+        <td>
+            <button class="btn-small" onclick="toggleEmailBody('${email.uid}')">Details</button>
+            ${currentFolder === 'inbox' ? `<button class="btn-small red" onclick="deleteEmail('${email.uid}')">Delete</button>` : ''}
+        </td>
+    `;
+    return tr;
+}
+
+function createEmailBodyRow(email) {
+    const bodyRow = document.createElement('tr');
+    bodyRow.style.display = 'none';
+    bodyRow.setAttribute('id', `email-body-${email.uid}`);
+    bodyRow.innerHTML = `
+        <td colspan="4">From: ${email.from}<br>To: ${email.to}<br>UID: ${email.uid}<br>Date: ${email.date}<br>${email.body.replace(/\n/g, '<br>')}</td>
+    `;
+    return bodyRow;
+}
+
+function toggleEmailBody(emailId) {
+    const bodyRow = document.getElementById(`email-body-${emailId}`);
+    bodyRow.style.display = bodyRow.style.display === 'none' ? 'table-row' : 'none';
+}
+
+async function deleteEmail(emailId) {
+    if (!confirm('Are you sure you want to delete this email?')) return;
+    try {
+        const response = await fetch(`${localhosturl}/deleteemails`, {
+            credentials: "include",
+            method: 'POST',
+            headers: { 'Content-Type': "text/plain" },
+            body: emailId,
+        });
+        if (!response.ok) throw new Error('Failed to delete email');
+        M.toast({ html: 'Email deleted successfully!', classes: 'green' });
+        fetchEmails(currentFolder);
+    } catch (error) {
+        console.error(error);
+        M.toast({ html: 'Error deleting email!', classes: 'red' });
+    }
+}
+
+async function handleEmailSend(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const to = formData.get('to');
+    const subject = formData.get('subject');
+    const body = formData.get('body');
+
+    try {
+        const response = await fetch(`${localhosturl}/emails`, {
+            credentials: "include",
+            method: 'POST',
+            headers: { 'Content-Type': "text/plain" },
+            body: JSON.stringify({ to, subject, body }),
+        });
+        if (!response.ok) throw new Error('Failed to send email');
+        event.target.reset();
+        M.toast({ html: 'Email sent successfully!', classes: 'green' });
+    } catch (error) {
+        M.toast({ html: 'Failed to send email!', classes: 'red' });
+    }
+}
+
+function logout() {
+    makeAjaxRequest('GET', '/logout', (response, status, jqXHR) => {
+        if (jqXHR.status === 200) {
+            console.log("Logout successful!");
+            setUserSession(false);
+            alert('You have been logged out.');
+            location.reload();
+        }
+    });
+}
+
+function reset_password() {
+    makeAjaxRequest('GET', '/logout', (response, status, jqXHR) => {
+        if (jqXHR.status === 200) {
+            setUserSession(false);
+        }
+    });
+}
+
+
+
+                </script>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

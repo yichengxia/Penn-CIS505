@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Homepage</title>
+    <style>
+        nav {
+            background-color: #5a93e2;
+        }
+    </style>
+</head>
+
+<body>
+  <nav>
+    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="relative flex h-16 items-center justify-between">
+        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div class="flex flex-shrink-0 items-center">
+            <a href="/home">
+            <img class="h-16 w-auto" src="./images/penncloud-logo-name.png" alt="Logo">
+            </a>
+          </div>
+          <div class="hidden sm:ml-6 sm:block">
+            <div class="flex space-x-5">
+              <a id="reset-password" onclick="reset_password()" href="/reset_password" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Reset Password</a>
+              <div id="usr-status"><a href="/login" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Log In</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <a id="existing-usr" class="flex text-gray-300 rounded-md px-3 py-2 text-sm font-medium">Not Logged In</a>
+          <a id="user-avatar"><img
+            style="height: 32px; width: 32px"
+            src="./images/user_default.png" alt="User Icon"></a>
+        </div>
+      </div>
+    </div>
+
+  </nav>
+
+
+  
+
+
+  <main class="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <a> <img class="h-20 w-auto" src="./images/penncloud-logo.png" alt="Logo"> </a>
+    <div class="text-center">
+      <p class="mt-5 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Penn Cloud Homepage</p>
+      <h1 class="mt-6 text-base leading-7 text-gray-600">Welcome to Penn Cloud!</h1>
+    </div>
+    <div class="mx-auto max-w-7xl lg:px-8 h-20">
+      <a href="/storage" class="btn btn-primary" role="button">Storage</a>
+    </div>
+    <div class="mx-auto max-w-7xl lg:px-8 h-20">
+      <a href="/webmail" class="btn btn-primary orange" role="button">Mail</a>
+    </div>
+    <div class="mx-auto max-w-7xl lg:px-8 h-20">
+      <a href="http://localhost:8888" class="btn btn-primary green" role="button">Admin</a>
+    </div>
+      
+    </div >
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <script>
+        // Function to check if user is logged in
+function checkLoginStatus() {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
+}
+
+// Function to set user session
+function setUserSession(isLoggedIn, username = '') {
+    sessionStorage.setItem('isLoggedIn', isLoggedIn.toString());
+    if (isLoggedIn) {
+        sessionStorage.setItem('username', username);
+    } else {
+        sessionStorage.removeItem('username');
+    }
+}
+
+// Function to update UI based on login status
+function updateUI() {
+    if (checkLoginStatus()) {
+        const username = sessionStorage.getItem('username');
+        document.getElementById("existing-usr").innerText = username;
+        console.log(username);
+        document.getElementById('user-avatar').innerHTML = '<img style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; margin-top: 20%;" src="./images/user_avatar.png" alt="User Icon">';
+        document.getElementById("usr-status").innerHTML = '<a onclick="logout()" style="font-weight: bold;"> Log out </a>';
+    }
+}
+
+// Generic function to handle AJAX requests
+function makeAjaxRequest(method, url, successHandler, errorHandler) {
+    $.ajax({
+        type: method,
+        url: url,
+        success: successHandler,
+        error: (jqXHR, status, error) => {
+            alert('An error occurred: ' + error);
+            errorHandler && errorHandler(jqXHR, status, error);
+        }
+    });
+}
+
+// Initial login check and possible re-authentication
+if (!checkLoginStatus()) {
+    makeAjaxRequest('GET', '/hello', (response, status, jqXHR) => {
+        console.log(response);
+        if (response !== "401 Unauthorized") {
+            setUserSession(true, response);
+        }
+    });
+}
+
+// Log out functionality
+function logout() {
+    makeAjaxRequest('GET', '/logout', (response, status, jqXHR) => {
+        if (jqXHR.status === 200) {
+            console.log("Logout successful!");
+            setUserSession(false);
+            alert('You have been logged out.');
+            location.reload();
+        }
+    });
+}
+
+function reset_password() {
+    makeAjaxRequest('GET', '/logout', (response, status, jqXHR) => {
+        if (jqXHR.status === 200) {
+            setUserSession(false);
+        }
+    });
+}
+
+// Update the UI initially and whenever necessary
+updateUI();
+
+    </script>
+</body>
+
+</html>

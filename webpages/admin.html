@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <title>Admin Page</title>
+  <meta charset="UTF-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <style>
+    nav {
+      background-color: #5a93e2;
+    }
+  </style>
+</head>
+<body>
+	<nav>
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex flex-shrink-0 items-center">
+                <a href="/home">
+                <img class="h-16 w-auto" src="./images/penncloud-logo-name.png" alt="Logo">
+                </a>
+              </div>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-5">
+                  <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                  <a href="/storage" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Storage</a>
+                  <a href="/webmail" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Mail</a>
+                  <a href="http://localhost:8888" class="bg-gray-900 text-white rounded-md px-3 py-2 text-md font-medium" aria-current="page">Admin</a>
+                  <a id="reset-password" onclick="reset_password()" href="/reset_password" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Reset Password</a>
+                  <a id="usr-status" href="/login" class="text-white-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-md font-medium">Log In</a>
+                </div>
+              </div>
+            </div>
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <a id="existing-usr" class="flex text-white-300 rounded-md px-3 py-2 text-sm font-medium">Not Logged In</a>
+              <a id="user-avatar"><img
+                style="height: 30px; width: 30px"
+                src="./images/user_default.png" alt="User Icon"></a>
+            </div>
+          </div>
+        </div>
+    
+      </nav>
+<div>
+  <!-- Frontend Servers Section -->
+  <div class="row p-2">
+      <div class="card">
+          <div class="card-body">
+            <div></div>
+              <span class="card-title">Frontend Servers</span>
+              <div></div>
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Server</th>
+                          <div></div>
+                          <th>Status</th>
+                          <div></div>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody id="frontend-table-body">
+                      <!-- Dynamic content will be loaded here -->
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+
+  <!-- Backend Servers Section -->
+  <div class="row">
+      <div class="card">
+          <div class="card-body">
+            <div></div>
+              <span class="card-title">Backend Servers</span>
+              <table class="table">
+                <div></div>
+                  <thead>
+                      <tr>
+                          <th>Server</th>
+                          <div></div>
+                          <th>Status</th>
+                          <div></div>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody id="backend-table-body">
+                      <!-- Dynamic content will be loaded here -->
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+
+  <!-- Key-Value Table Section -->
+  <div>
+      <table>
+        <div></div>
+          <thead>
+              <tr>
+                  <th>Row</th>
+                  <div></div>
+                  <th>Col</th>
+                  <div></div>
+                  <th>Value</th>
+              </tr>
+          </thead>
+          <tbody id="key-value-table">
+              <!-- Dynamic content will be loaded here -->
+          </tbody>
+      </table>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <script>
+  	const frontend_servers = [
+    { id: 0, status: "waiting for status" },
+    { id: 1, status: "waiting for status" },
+    { id: 2, status: "waiting for status" }
+];
+
+const backend_servers = [
+    { id: 0, status: "waiting for status" },
+    { id: 1, status: "waiting for status" },
+    { id: 2, status: "waiting for status" },
+    { id: 3, status: "waiting for status" },
+    { id: 4, status: "waiting for status" },
+    { id: 5, status: "waiting for status" },
+    { id: 6, status: "waiting for status" },
+    { id: 7, status: "waiting for status" },
+    { id: 8, status: "waiting for status" }
+];
+
+const sendRequest = (method, url, data, successCallback, errorCallback) => {
+    $.ajax({ type: method, url, data, success: successCallback, error: errorCallback });
+};
+
+// Set up UI for servers
+const setupServers = (servers, serverType, tbodyElement) => {
+    servers.forEach(server => {
+        const tr = document.createElement('tr');
+        const idCell = document.createElement('td');
+        const statusCell = document.createElement('td');
+        const actionCell = document.createElement('td');
+        const button = document.createElement('button');
+
+        const serverPartition = Math.floor(server.id / 3) + 1;
+        const serverReplica = server.id % 3;
+        const serverName = `${server.id}(${serverPartition}-${serverReplica})`;
+
+        idCell.textContent = serverName;
+        statusCell.textContent = server.status;
+        statusCell.id = `${serverType}${server.id}-status`;
+
+        button.textContent = server.status === 'running' ? 'shutdown' : 'restart';
+        button.className = server.status === 'running' ? 'btn red' : 'btn green';
+        button.onclick = () => handleServerAction(server.id, serverType, button, statusCell);
+
+        actionCell.appendChild(button);
+        tr.append(idCell, statusCell, actionCell);
+        tbodyElement.appendChild(tr);
+    });
+};
+
+const handleServerAction = (serverId, serverType, button, statusCell) => {
+    const action = button.textContent === 'shutdown' ? 'shutdown' : 'restart';
+    sendRequest('POST', '/status', { serverType, serverId, action }, (response, status, jqXHR) => {
+        console.log(`Server response: ${response}`);
+        if (response.includes("503")) {
+            statusCell.textContent = 'stopped';
+            button.textContent = 'restart';
+            button.className = 'btn green';
+        } else {
+            statusCell.textContent = 'running';
+            button.textContent = 'shutdown';
+            button.className = 'btn red';
+        }
+    }, (jqXHR, status, error) => {
+        console.error(`An error occurred: ${error}`);
+    });
+};
+
+// Initialize UI for front-end and back-end servers
+var A = 'frontend-table-body';
+const bee = document.getElementById(A);
+setupServers(frontend_servers, 'fe', fee);
+var B = 'backend-table-body';
+const fee = document.getElementById(B);
+setupServers(backend_servers, 'be', bee);
+
+// Log in and log out functionality
+const updateLoginStatus = (isLoggedIn) => {
+    sessionStorage.setItem('isLoggedIn', isLoggedIn ? 'true' : 'false');
+    if (!isLoggedIn) {
+        sessionStorage.removeItem('username');
+        alert('You have been logged out.');
+        location.href = "/home";
+    }
+};
+
+const logout = () => {
+    sendRequest('GET', '/logout', {}, response => {
+        updateLoginStatus(false);
+    }, (jqXHR, status, error) => {
+        alert(`An error occurred: ${error}`);
+    });
+};
+
+if (sessionStorage.getItem('isLoggedIn') === 'true') {
+    const userStatus = document.getElementById("usr-status");
+    userStatus.innerHTML = `<a href="#" onclick="logout()" style="font-weight: bold;"> Log out </a>`;
+    const userAvatar = document.getElementById('user-avatar');
+    userAvatar.innerHTML = `<img style="width: 40px; height: 40px; border-radius: 50%;" src="./images/user_avatar.png" alt="User Icon">`;
+}
+
+// Periodic server status check and update
+setInterval(() => {
+    frontend_servers.concat(backend_servers).forEach(server => {
+        handleServerAction(server.id, server.type === 'frontend' ? 'fe' : 'be', document.getElementById(`${server.type}${server.id}-action`), document.getElementById(`${server.type}${server.id}-status`));
+    });
+}, 2000);
+
+  </script>
+</body>
+</html>
