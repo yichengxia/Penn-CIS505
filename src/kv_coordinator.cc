@@ -1,4 +1,4 @@
-#include "src/kvmaster.h"
+#include "src/kv_coordinator.h"
 
 
 void signal_hanlder(int signal_fd) {

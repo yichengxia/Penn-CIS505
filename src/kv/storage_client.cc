@@ -1,4 +1,4 @@
-#include "client.h"
+#include "storage_client.h"
 
 string AA="round_";
 string BB="robin";
@@ -40,7 +40,7 @@ Partition::Partition(vector<Node> &n):nodes(std::move(n)) {
 
 
 
-KVClient::KVClient(const string &addr_m) {
+KVStorageClient::KVStorageClient(const string &addr_m) {
     bool debugging=false;
     auto cc=CreateChannel(addr_m,InsecureChannelCredentials());
     if (debugging){
@@ -52,7 +52,7 @@ KVClient::KVClient(const string &addr_m) {
 
 
 
-Partition &KVClient::row_partition(const string &rr) {
+Partition &KVStorageClient::row_partition(const string &rr) {
     int len_md5=16;
     uint8_t h8[len_md5];
     size_t ss=rr.size();

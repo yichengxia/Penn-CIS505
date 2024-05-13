@@ -7,7 +7,7 @@
 
 using namespace std;
 
-KVClient *kvClient;
+KVStorageClient *KVStorageClient;
 SessionManager *session_manager;
 bool serving = true;
 string server_addr = "127.0.0.1:5000";
@@ -42,7 +42,7 @@ feServer::feServer(int port){
 }
 
 void feServer::run_server() {
-    kvClient = new KVClient(server_addr);
+    KVStorageClient = new KVStorageClient(server_addr);
     session_manager = new SessionManager();
 
     while (serving) {
@@ -68,8 +68,8 @@ void feServer::handle_client(int client_socket) {
     }
 
     string raw_request(buffer.get(), bytes_read);
-    RequestHandler request_handler(session_manager, kvClient, serving);
-    string response = request_handler.handle_request(raw_request);
+    RequestHandler request_handler(session_manager, KVStorageClient, serving);
+    string response = req_handling.handle_request(raw_request);
 
     int nilt=0;
     size_t resp_size=response.size();

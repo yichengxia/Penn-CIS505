@@ -12,8 +12,8 @@
 #include <grpcpp/client_context.h>
 
 #include "src/protos/kvmaster.grpc.pb.h"
-#include "src/common/utils.h"
-#include "src/kv/master_client.h"
+#include "src/common/common_util.h"
+#include "src/kv/storage_client_coordinator.h"
 
 using namespace std;
 using namespace grpc;

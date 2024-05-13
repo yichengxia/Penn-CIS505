@@ -16,7 +16,7 @@ using grpc::ClientContext;
 using grpc::Status;
 using grpc::Channel;
 
-#include "src/kv/master_client.h"
+#include "src/kv/storage_client_coordinator.h"
 #include "src/protos/kv.grpc.pb.h"
 
 class AdminClient : public KVMasterClient {

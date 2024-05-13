@@ -10,8 +10,8 @@
 
 #include "src/protos/kv.grpc.pb.h"
 #include "src/protos/kvmaster.grpc.pb.h"
-#include "src/kv/exceptions.h"
-#include "src/common/utils.h"
+#include "src/kv/err_except.h"
+#include "src/common/common_util.h"
 
 using namespace std;
 using namespace grpc;
@@ -39,7 +39,7 @@ public:
     explicit Partition(vector<Node> &n);
 };
 
-class KVClient
+class KVStorageClient
 {
 
     vector<Partition> partitions;
@@ -102,7 +102,7 @@ class KVClient
 
 public:
 
-    explicit KVClient(const string &addr_m);
+    explicit KVStorageClient(const string &addr_m);
 
     string get(const string &row, const string &col)
     {

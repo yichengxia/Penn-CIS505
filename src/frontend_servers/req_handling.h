@@ -1,7 +1,7 @@
 #pragma once
 
 #include "util.h"
-#include "src/kv/client.h"
+#include "src/kv/storage_client.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -13,7 +13,7 @@ class RequestHandler {
 
     int handler_ID;
 
-    RequestHandler(SessionManager *session_manager, KVClient *kvClient, bool &serving_) : session_manager_(session_manager), client(kvClient), serving(serving_) {}
+    RequestHandler(SessionManager *session_manager, KVStorageClient *KVStorageClient, bool &serving_) : session_manager_(session_manager), client(KVStorageClient), serving(serving_) {}
 
     bool is_handling;
 
@@ -26,7 +26,7 @@ class RequestHandler {
 
   private:
 
-    KVClient *client;
+    KVStorageClient *client;
 
     int client_ID;
 

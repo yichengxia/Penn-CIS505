@@ -18,14 +18,14 @@ cc_grpc_library(
 
 cc_library(
     name = "utils",
-    srcs = ["common/utils.cc"],
-    hdrs = ["common/utils.h"],
+    srcs = ["common/common_util.cc"],
+    hdrs = ["common/common_util.h"],
 )
 
 cc_library(
     name = "kv-client",
-    srcs = ["kv/client.cc"],
-    hdrs = ["kv/client.h"],
+    srcs = ["kv/storage_client.cc"],
+    hdrs = ["kv/storage_client.h"],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
         "@openssl//:headers",
@@ -39,8 +39,8 @@ cc_library(
 
 cc_library(
     name = "kv-master-client",
-    srcs = ["kv/master_client.cc"],
-    hdrs = ["kv/master_client.h"],
+    srcs = ["kv/storage_client_coordinator.cc"],
+    hdrs = ["kv/storage_client_coordinator.h"],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
         ":kv_grpc",
@@ -51,8 +51,8 @@ cc_library(
 
 cc_library(
     name = "kv-exceptions",
-    hdrs = ["kv/exceptions.h"],
-    srcs = ["kv/exceptions.cc"],
+    hdrs = ["kv/err_except.h"],
+    srcs = ["kv/err_except.cc"],
     deps = ["@com_github_grpc_grpc//:grpc++"],
 )
 
@@ -71,7 +71,7 @@ cc_library(
 
 cc_library(
     name = "kvmaster-header",
-    hdrs = ["kvmaster.h"],
+    hdrs = ["kv_coordinator.h"],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
         ":kvmaster_grpc",
@@ -82,8 +82,8 @@ cc_library(
 
 # executables
 cc_binary(
-    name = "kv",
-    srcs = ["kv.cc"],
+    name = "kv_server",
+    srcs = ["kv_server.cc"],
     deps = [
         "kvheader",
     ],
@@ -91,8 +91,8 @@ cc_binary(
 )
 
 cc_binary(
-    name = "kvmaster",
-    srcs = ["kvmaster.cc"],
+    name = "kv_coordinator",
+    srcs = ["kv_coordinator.cc"],
     deps = [
         "kvmaster-header",
     ],

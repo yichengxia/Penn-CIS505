@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "../mailserver/mailhelper.h"
-#include "request_handler.h"
+#include "req_handling.h"
 
 using namespace std;
 

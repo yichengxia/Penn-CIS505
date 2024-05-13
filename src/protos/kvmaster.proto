@@ -16,17 +16,17 @@ message GetPrimaryRequest {
 }
 
 message GetPrimaryResponse {
-  string addr = 1;  // the primary for your partition is *addr*
-  repeated NodeView_Node nodes = 2;  // and here are the other nodes
-}
-
-// ==== support ====
-message NodeView_Partition {
-  int32 primary_idx = 1;
-  repeated NodeView_Node node = 2;
+  string addr = 1; 
+  repeated NodeView_Node nodes = 2; 
 }
 
 message NodeView_Node {
   string address = 1;
   bool alive = 2;
 }
+
+message NodeView_Partition {
+  int32 primary_idx = 1;
+  repeated NodeView_Node node = 2;
+}
+

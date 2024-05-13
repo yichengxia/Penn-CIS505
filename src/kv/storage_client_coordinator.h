@@ -10,8 +10,8 @@
 #include <grpcpp/create_channel.h>
 
 #include "src/protos/kv.grpc.pb.h"
-#include "src/common/utils.h"
-#include "src/kv/exceptions.h"
+#include "src/common/common_util.h"
+#include "src/kv/err_except.h"
 
 using namespace grpc;
 using namespace std;

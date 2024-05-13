@@ -3,8 +3,8 @@ load("//bazel:defs.bzl", "LINKOPTS")
 
 cc_library(
     name = "request_handler",
-    srcs = ["request_handler.cc"],
-    hdrs = ["request_handler.h"],
+    srcs = ["req_handling.cc"],
+    hdrs = ["req_handling.h"],
     deps = [
         "@com_github_grpc_grpc//:grpc++",
         "//src/frontend_servers:util",
@@ -16,8 +16,8 @@ cc_library(
 )
 
 cc_library(
-    name = "admin_server",
-    srcs = ["admin_server.cc"],
+    name = "admin_console_server",
+    srcs = ["admin_console_server.cc"],
     deps = [
         "//src/frontend_servers:util",
     	"//src:kv-client",

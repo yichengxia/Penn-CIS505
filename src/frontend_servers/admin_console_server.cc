@@ -11,12 +11,12 @@
 #include <sstream>
 #include "util.h"
 #include "nlohmann/json.hpp"
-#include "src/kv/client.h"
+#include "src/kv/storage_client.h"
 
 using json = nlohmann::json;
 using namespace std;
 
-KVClient *kvClient;
+KVStorageClient *KVStorageClient;
 int server_socket;
 map<int, string> frontend_ports{{0, "127.0.0.1:8080"}, {1, "127.0.0.1:8081"}, {2, "127.0.0.1:8082"}};
 map<int, string> backend_ports;
@@ -403,7 +403,7 @@ string handle_post_details(const string& raw_request, AdminClient& admin) {
     try {   
         bool debugging;
         // Attempt to get the value from the KV server
-        val = kvClient->get(row, col);
+        val = KVStorageClient->get(row, col);
         debugging=true;
         if (debugging){
             fprintf(stdout,"Marker: Get val already!");
@@ -586,7 +586,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Config file should have KV master addr on first line\n");
         exit(EXIT_FAILURE);
     }
-    kvClient = new KVClient(master_addr);
+    KVStorageClient = new KVStorageClient(master_addr);
     vector<MasterPartitionView> partitions;
     string line;
     while (getline(f, line)) {
