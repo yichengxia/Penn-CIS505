@@ -31,7 +31,7 @@ bazel build ...
 ```
 instead. It will build the project and generate the necessary files in a few minutes.
 
-## Test
+## Minimal Solution
 
 To test the KV store, run with a minimal solution with one primary and one secondary node by calling both the server and the coordinator with the following commands:
 ```bash
@@ -43,7 +43,7 @@ bazel-bin/src/kv_coordinator data/storage_11.bin data/log_11.bin config.txt 1 1 
 
 For the rest part, see the following instructions.
 
-## Run
+## Full System
 
 ### Storage
 
@@ -90,3 +90,9 @@ bazel-bin/src/frontend_servers/load_balancer
 ```bash
 bazel-bin/src/frontend_servers/admin_console_server feconfig.txt
 ```
+
+### Enter the System
+
+Open your browser and enter `localhost:8090` to access the system,
+which will direct you to one of the active frontend servers;
+or enter `localhost:8888` to access the admin console.
