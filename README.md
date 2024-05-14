@@ -41,8 +41,8 @@ instead. It will build the project and generate the necessary files in a few min
 To test the KV store, run with a minimal solution with one primary and one secondary node by calling both the server and the coordinator with the following commands:
 ```bash
 bazel-bin/src/kv_server config_test.txt &
-bazel-bin/src/kv_coordinator data/storage_10.bin data/log_10.bin config.txt 1 0 &
-bazel-bin/src/kv_coordinator data/storage_11.bin data/log_11.bin config.txt 1 1 &
+bazel-bin/src/kv_coordinator data/storage_10.bin data/log_10.bin config_test.txt 1 0 &
+bazel-bin/src/kv_coordinator data/storage_11.bin data/log_11.bin config_test.txt 1 1 &
  &
 ```
 
