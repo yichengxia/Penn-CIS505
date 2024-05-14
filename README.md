@@ -1,20 +1,25 @@
 # PennCloud
 
-## Demo (To be updated after recording)
+## Demo
 
-We provide a [demo video]() to fully show the primary features of our project.
+We provide a [demo video](https://www.youtube.com/watch?v=4uSrdlRKoJA) to fully show the primary features of our project.
 
 Sample screenshots are shown below:
 
 ### Home Page
+![Home Page](data/homepage.png)
 
 ### Sign Up
+![Sign Up](data/signup.png)
 
 ### Storage
+![Storage](data/storage.png)
 
 ### Webmail
+![Webmail](data/webmail.png)
 
-### Admin
+### Admin Console
+![Admin Console](data/admin-console.png)
 
 ## Setup
 
