@@ -1,5 +1,7 @@
 # PennCloud
 
+Team 19 by Yicheng Xia, Lei Sun, Jiangyi Zhu, and Xuting Liu
+
 ## Demo
 
 We provide a [demo video](https://www.youtube.com/watch?v=4uSrdlRKoJA) to fully show the primary features of our project.
